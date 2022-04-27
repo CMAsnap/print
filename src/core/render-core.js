@@ -2,7 +2,8 @@ const puppeteer = require('puppeteer');
 const _ = require('lodash');
 const config = require('../config');
 const logger = require('../util/logger')(__filename);
-
+const { writeFileSync, readFileSync, unlinkSync } = require('fs');
+const { execSync } = require('child_process');
 
 async function createBrowser(opts) {
   const browserOpts = {
@@ -173,6 +174,16 @@ async function render(_opts = {}) {
         opts.pdf.height = height;
       }
       data = await page.pdf(opts.pdf);
+      try {
+        const now = Date.now();
+        writeFileSync(`in-${now}.pdf`, data);
+        execSync(`gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=out-${now}.pdf in-${now}.pdf`);
+        data = readFileSync(`out-${now}.pdf`);
+        unlinkSync(`in-${now}.pdf`);
+        unlinkSync(`out-${now}.pdf`);
+      } catch (e) {
+        console.warn('PDF compression failed');
+      }
     } else if (opts.output === 'html') {
       data = await page.evaluate(() => document.documentElement.innerHTML);
     } else {
