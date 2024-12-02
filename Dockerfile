@@ -6,6 +6,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV NODE_ENV=production
 ENV NPM_CONFIG_LOGLEVEL=info
 ENV NODE_OPTIONS="--enable-source-maps"
+ENV DEBUG_MODE=false
+ENV ALLOW_HTTP=false
+ENV PORT=3000
 
 # Install dependencies
 RUN apt-get update && \
@@ -37,7 +40,7 @@ COPY . .
 RUN . "$NVM_DIR/nvm.sh" && nvm use default && npm install
 
 # Expose the application port
-EXPOSE 3000
+EXPOSE $PORT
 
 # Start the application with log forwarding
 CMD ["/bin/bash", "-c", ". /root/.nvm/nvm.sh && nvm use default && exec npm start | tee -a /dev/stdout"]
