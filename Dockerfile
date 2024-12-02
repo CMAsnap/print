@@ -45,7 +45,7 @@ WORKDIR /app
 COPY . .
 
 # Install application dependencies
-RUN . "$NVM_DIR/nvm.sh" && nvm use default && npm install && npm install puppeteer
+RUN . "$NVM_DIR/nvm.sh" && nvm use default && npm install
 
 # Expose the application port
 EXPOSE $PORT
