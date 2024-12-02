@@ -10,6 +10,8 @@ ENV DEBUG_MODE=false
 ENV ALLOW_HTTP=false
 ENV PORT=3000
 
+ARG API_TOKENS
+
 # Install dependencies
 RUN apt-get update && \
     apt-get install -y \
