@@ -51,4 +51,4 @@ RUN . "$NVM_DIR/nvm.sh" && nvm use default && npm install
 EXPOSE $PORT
 
 # Start the application with log forwarding
-CMD ["/bin/bash", "-c", ". /root/.nvm/nvm.sh && nvm use default && exec npm start | tee -a /dev/stdout"]
+CMD ["/bin/bash", "-c", ". /root/.nvm/nvm.sh && nvm use default && exec npm start"]
