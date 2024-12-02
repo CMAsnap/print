@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV NODE_ENV=production
 ENV NPM_CONFIG_LOGLEVEL=info
 ENV NODE_OPTIONS="--enable-source-maps"
-ENV DEBUG_MODE=false
+ENV DEBUG_MODE=true
 ENV ALLOW_HTTP=false
 ENV PORT=3000
 
