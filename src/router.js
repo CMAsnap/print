@@ -9,6 +9,8 @@ const { renderQuerySchema, renderBodySchema, sharedQuerySchema } = require('./ut
 function createRouter() {
   const router = express.Router();
 
+  router.get('/healthcheck', (req, res) => res.status(200).send('OK'));
+
   if (!_.isEmpty(config.API_TOKENS)) {
     logger.info('x-api-key authentication required');
 
@@ -48,8 +50,6 @@ function createRouter() {
     },
   };
   router.post('/api/render', validate(postRenderSchema), render.postRender);
-
-  router.get('/healthcheck', (req, res) => res.status(200).send('OK'));
 
   return router;
 }
