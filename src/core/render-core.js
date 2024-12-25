@@ -75,8 +75,8 @@ async function render(_opts = {}) {
 
   const browser = await createBrowser(opts);
   const page = await browser.newPage();
-  page.setDefaultNavigationTimeout(60000); // 60 seconds
-  page.setDefaultTimeout(60000);
+  page.setDefaultNavigationTimeout(120000); // 60 seconds
+  page.setDefaultTimeout(120000);
 
   page.on('console', (...args) => logger.info('PAGE LOG:', ...args));
 
