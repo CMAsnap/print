@@ -179,7 +179,7 @@ async function render(_opts = {}) {
       try {
         const now = Date.now();
         writeFileSync(`in-${now}.pdf`, data);
-        execSync(`gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dQUIET -dBATCH -sOutputFile=out-${now}.pdf in-${now}.pdf`);
+        execSync(`gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=out-${now}.pdf in-${now}.pdf`);
         data = readFileSync(`out-${now}.pdf`);
         unlinkSync(`in-${now}.pdf`);
         unlinkSync(`out-${now}.pdf`);
