@@ -75,8 +75,8 @@ async function render(_opts = {}) {
 
   const browser = await createBrowser(opts);
   const page = await browser.newPage();
-  page.setDefaultNavigationTimeout(600000); // 60 seconds
-  page.setDefaultTimeout(600000);
+  page.setDefaultNavigationTimeout(60000); // 60 seconds
+  page.setDefaultTimeout(60000);
 
   page.on('console', (...args) => logger.info('PAGE LOG:', ...args));
 
@@ -144,7 +144,7 @@ async function render(_opts = {}) {
     if (this.failedResponses.length) {
       logger.warn(`Number of failed requests: ${this.failedResponses.length}`);
       this.failedResponses.forEach((response) => {
-        logger.warn(`${response.status} ${response.url}`);
+        logger.warn(`${response._response.status()} ${response.url()}`);
       });
 
       if (opts.failEarly === 'all') {
@@ -179,7 +179,7 @@ async function render(_opts = {}) {
       try {
         const now = Date.now();
         writeFileSync(`in-${now}.pdf`, data);
-        execSync(`gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=out-${now}.pdf in-${now}.pdf`);
+        execSync(`gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dQUIET -dBATCH -sOutputFile=out-${now}.pdf in-${now}.pdf`);
         data = readFileSync(`out-${now}.pdf`);
         unlinkSync(`in-${now}.pdf`);
         unlinkSync(`out-${now}.pdf`);
