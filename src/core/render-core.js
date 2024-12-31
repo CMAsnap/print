@@ -5,6 +5,20 @@ const logger = require('../util/logger')(__filename);
 const { writeFileSync, readFileSync, unlinkSync } = require('fs');
 const { execSync } = require('child_process');
 
+async function waitForImages(page) {
+  await page.evaluate(async () => {
+    const images = document.getElementsByTagName('img');
+    const promises = Array.from(images).map(img => {
+      if (img.complete) return Promise.resolve();
+      return new Promise((resolve, reject) => {
+        img.addEventListener('load', resolve);
+        img.addEventListener('error', resolve); // Resolve on error to continue
+      });
+    });
+    await Promise.all(promises);
+  });
+}
+
 async function createBrowser(opts) {
   const browserOpts = {
     ignoreHTTPSErrors: opts.ignoreHttpsErrors,
@@ -58,7 +72,7 @@ async function render(_opts = {}) {
       height: 1200,
     },
     goto: {
-      waitUntil: 'networkidle0',
+      waitUntil: 'domcontentloaded',
     },
     output: 'pdf',
     pdf: {
@@ -140,8 +154,10 @@ async function render(_opts = {}) {
 
     if (_.isNumber(opts.waitFor) || _.isString(opts.waitFor)) {
       logger.info(`Wait for ${opts.waitFor} ..`);
-      await page.waitFor(opts.waitFor);
+      await page.waitForSelector(opts.waitFor);
     }
+
+    await waitForImages(page);
 
     if (opts.scrollPage) {
       logger.info('Scroll page ..');
