@@ -72,7 +72,7 @@ async function render(_opts = {}) {
       height: 1200,
     },
     goto: {
-      waitUntil: 'domcontentloaded',
+      waitUntil: 'networkidle0',
     },
     output: 'pdf',
     pdf: {
