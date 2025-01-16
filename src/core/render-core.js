@@ -167,7 +167,11 @@ async function render(_opts = {}) {
     if (this.failedResponses.length) {
       logger.warn(`Number of failed requests: ${this.failedResponses.length}`);
       this.failedResponses.forEach((response) => {
-        logger.warn(`${response._response.status()} ${response.url()}`);
+        try {
+          logger.warn(`${response._response.status()} ${response.url()}`);
+        } catch (e) {
+          logger.warn(`Failed to log response: ${e}`);
+        }
       });
 
       if (opts.failEarly === 'all') {
