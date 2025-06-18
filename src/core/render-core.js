@@ -31,7 +31,7 @@ async function createBrowser(opts) {
   if (config.BROWSER_EXECUTABLE_PATH) {
     browserOpts.executablePath = config.BROWSER_EXECUTABLE_PATH;
   }
-  browserOpts.headless = !config.DEBUG_MODE;
+  browserOpts.headless = config.HEADLESS_MODE;
   browserOpts.args = [
     '--no-sandbox',
     '--disable-setuid-sandbox',

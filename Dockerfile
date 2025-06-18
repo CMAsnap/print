@@ -50,5 +50,8 @@ RUN . "$NVM_DIR/nvm.sh" && nvm use default && \
 # Expose the application port
 EXPOSE $PORT
 
+# Force headless mode in Docker
+ENV HEADLESS_MODE=true
+
 # Start the application with log forwarding
 CMD ["/bin/bash", "-c", ". /root/.nvm/nvm.sh && nvm use default && exec npm start"]
