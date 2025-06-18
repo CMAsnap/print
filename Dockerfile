@@ -14,11 +14,7 @@ ARG API_TOKENS
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y \
-    curl \
-    gnupg \
-    ca-certificates \
-    apt-transport-https \
+    apt-get install -y curl gnupg ca-certificates apt-transport-https \
     software-properties-common gconf-service libxext6 libxfixes3 libxi6 \
     libxrandr2 libxrender1 libcairo2 libcups2 libdbus-1-3 libexpat1 \
     libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 \
@@ -29,15 +25,11 @@ RUN apt-get update && \
     libgbm-dev
 
 # Install NVM
-ENV NVM_DIR /root/.nvm
+ENV NVM_DIR=/root/.nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 
 # Install Node.js using NVM
 RUN . "$NVM_DIR/nvm.sh" && nvm install stable && nvm use stable && nvm alias default stable
-
-# Install Chromium
-RUN apt-get update && \
-    apt-get install -y chromium-browser
 
 # Set the working directory
 WORKDIR /app
@@ -47,6 +39,13 @@ COPY . .
 
 # Install application dependencies
 RUN . "$NVM_DIR/nvm.sh" && nvm use default && npm install
+
+# Install Chrome via Puppeteer
+ENV PUPPETEER_SKIP_DOWNLOAD=false
+ENV PUPPETEER_CACHE_DIR=/root/.cache/puppeteer
+RUN . "$NVM_DIR/nvm.sh" && nvm use default && \
+    cd /app && \
+    npx puppeteer browsers install chrome
 
 # Expose the application port
 EXPOSE $PORT
